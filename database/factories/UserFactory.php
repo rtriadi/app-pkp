@@ -28,6 +28,8 @@ class UserFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
+            'role' => 'pegawai',
+            'is_active' => true,
             'remember_token' => Str::random(10),
         ];
     }
@@ -37,8 +39,58 @@ class UserFactory extends Factory
      */
     public function unverified(): static
     {
-        return $this->state(fn (array $attributes) => [
+        return $this->state(fn(array $attributes) => [
             'email_verified_at' => null,
+        ]);
+    }
+
+    /**
+     * Create a super admin user.
+     */
+    public function superAdmin(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'super_admin',
+        ]);
+    }
+
+    /**
+     * Create a pejabat penilai (assessor) user.
+     */
+    public function pejabatPenilai(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'pejabat_penilai',
+        ]);
+    }
+
+    /**
+     * Create an atasan pejabat (supervisor) user.
+     */
+    public function atasanPejabat(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'atasan_pejabat',
+        ]);
+    }
+
+    /**
+     * Create a pegawai (employee) user.
+     */
+    public function pegawai(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'role' => 'pegawai',
+        ]);
+    }
+
+    /**
+     * Create an inactive user.
+     */
+    public function inactive(): static
+    {
+        return $this->state(fn(array $attributes) => [
+            'is_active' => false,
         ]);
     }
 }
